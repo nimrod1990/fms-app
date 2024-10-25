@@ -6,7 +6,14 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   return (
-    <div className="progress-bar-container">
+    <div
+      className="progress-bar-container"
+      role="progressbar"
+      aria-valuenow={progress}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label="测试进度"
+    >
       <div className="progress-bar" style={{ width: `${progress}%` }}>
         <span>{Math.round(progress)}%</span>
       </div>

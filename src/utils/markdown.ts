@@ -5,7 +5,7 @@ export const generateMarkdown = (
   results: TestResult[],
   personalInfo: PersonalInfo
 ): string => {
-  let totalScore = results.reduce((sum, result) => sum + result.score, 0);
+  const totalScore = results.reduce((sum, result) => sum + result.score, 0);
   let markdown = `# 功能动作筛查 (FMS) 评估结果\n\n`;
 
   markdown += `**被测试者姓名**：${personalInfo.name}  \n`;

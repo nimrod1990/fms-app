@@ -12,9 +12,13 @@ interface TestProps {
 const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => {
   // 初始化选中的分数
   const [selectedScore, setSelectedScore] = useState<number | null>(
-    existingResult ? (existingResult.score === 0 && test.clearing_test ? 0 : existingResult.score) : null
+    existingResult
+      ? test.clearing_test && existingResult.clearingTest
+        ? 0
+        : existingResult.score
+      : null
   );
-  
+
   // 初始化清除测试结果
   const [clearingTestResult, setClearingTestResult] = useState<boolean | null>(
     test.clearing_test ? (existingResult ? existingResult.clearingTest : null) : false
@@ -36,7 +40,8 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
         (selectedScore !== null && !clearingTestResult) ||
         (test.clearing_test && clearingTestResult === true)
       ) {
-        onNext(selectedScore || 0, clearingTestResult);
+        const finalScore = clearingTestResult ? 0 : selectedScore!;
+        onNext(finalScore, clearingTestResult);
       } else {
         alert('请完成所有选项');
       }

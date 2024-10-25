@@ -10,7 +10,7 @@ import './styles/App.css';
 
 const App: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
-  const [currentTestIndex, setCurrentTestIndex] = useState(0);
+  const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
   const [results, setResults] = useState<TestResult[]>([]);
 
   const handlePersonalInfoSubmit = (info: PersonalInfo) => {
@@ -19,12 +19,12 @@ const App: React.FC = () => {
 
   const handleNext = (score: number, clearingTest: boolean | null) => {
     const testName = data.categories[currentTestIndex].test_name;
-    // 如果选择了清除测试为“是”，则分数设为0
     const finalScore = clearingTest ? 0 : score;
     const newResult: TestResult = { testName, score: finalScore, clearingTest };
-    const newResults = [...results];
-    newResults[currentTestIndex] = newResult; // 覆盖当前测试结果
-    setResults(newResults);
+    const updatedResults = [...results];
+    updatedResults[currentTestIndex] = newResult; // 覆盖当前测试结果
+    setResults(updatedResults);
+
     if (currentTestIndex < data.categories.length - 1) {
       setCurrentTestIndex(currentTestIndex + 1);
     } else {
@@ -39,6 +39,12 @@ const App: React.FC = () => {
     }
   };
 
+  const handleRestart = () => {
+    setPersonalInfo(null);
+    setCurrentTestIndex(0);
+    setResults([]);
+  };
+
   if (!personalInfo) {
     // 显示个人信息表单
     return <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />;
@@ -46,7 +52,7 @@ const App: React.FC = () => {
 
   if (currentTestIndex === -1) {
     // 显示总结页面
-    return <Summary results={results} personalInfo={personalInfo} />;
+    return <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />;
   }
 
   const currentTest = data.categories[currentTestIndex];
