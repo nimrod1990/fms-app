@@ -263,3 +263,19 @@ button:hover {
     padding: 0 5px;
   }
 }
+/* 详细信息按钮样式 */
+.summary-container .results-table button,
+.result-card button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.summary-container .results-table button:hover,
+.result-card button:hover {
+  background-color: #218838;
+}

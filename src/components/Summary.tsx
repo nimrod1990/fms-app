@@ -1,7 +1,8 @@
 // src/components/Summary.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { TestResult, PersonalInfo } from '../types';
 import { generateMarkdown } from '../utils/markdown';
+import Modal from './Modal'; // 导入 Modal 组件
 
 interface SummaryProps {
   results: TestResult[];
@@ -55,7 +56,40 @@ const evaluationMessages: { [key: string]: { [score: number]: string } } = {
   },
 };
 
+// 定义每个测试的详细信息
+const testDetails: { [key: string]: React.ReactNode } = {
+  '深蹲 (Deep Squat)': (
+    <div>
+      <p><strong>原理：</strong>深蹲是一项多关节复合动作，主要评估髋、膝和踝关节的活动度，同时检测核心稳定性、肩部灵活性和全身的对称性。</p>
+      <p><strong>医学解释：</strong>深蹲测试揭示下肢关节（髋、膝、踝）的灵活性是否受限，以及脊柱的中立位稳定性。</p>
+      <p><strong>解决方案：</strong>改善髋关节灵活性、踝关节活动度的改善、脊柱稳定性训练。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  '跨栏步 (Hurdle Step)': (
+    <div>
+      <p><strong>原理：</strong>通过迈步跨越障碍来评估下肢的对称性、髋关节的活动度和核心稳定性。</p>
+      <p><strong>医学解释：</strong>测试主要观察髋关节的屈曲能力、骨盆的稳定性及下肢肌肉的协调性。</p>
+      <p><strong>解决方案：</strong>改善髋关节屈曲紧张、增加骨盆稳定性、改善核心控制能力。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  // 为其他测试项添加详细信息
+  '直线弓步 (Inline Lunge)': (
+    <div>
+      <p><strong>原理：</strong>通过弓步动作评估下肢的稳定性及髋、膝、踝的活动度和核心控制力。</p>
+      <p><strong>医学解释：</strong>主要关注下肢与躯干之间的协调性，尤其是在髋和膝之间的力学传导。</p>
+      <p><strong>解决方案：</strong>解决髋屈和膝关节的稳定性问题，控制膝盖和脚的对齐，躯干稳定性练习。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  // ...继续为所有测试项添加详细信息
+};
+
 const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedTest, setSelectedTest] = useState<string>('');
+
   const totalScore = results.reduce((sum, result) => sum + result.score, 0);
 
   const handleExport = () => {
@@ -65,6 +99,16 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
     link.href = URL.createObjectURL(blob);
     link.download = 'FMS评估结果.md';
     link.click();
+  };
+
+  const openModal = (testName: string) => {
+    setSelectedTest(testName);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTest('');
   };
 
   return (
@@ -86,6 +130,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
               <th>测试项目</th>
               <th>得分</th>
               <th>清除测试结果</th>
+              <th>详细信息</th>
             </tr>
           </thead>
           <tbody>
@@ -99,6 +144,9 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                     : result.clearingTest === false
                     ? '未通过'
                     : '无'}
+                </td>
+                <td>
+                  <button onClick={() => openModal(result.testName)}>详细信息</button>
                 </td>
               </tr>
             ))}
@@ -134,6 +182,11 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
         <button onClick={handleExport}>导出为 Markdown</button>
         <button onClick={onRestart}>重新开始</button>
       </div>
+
+      {/* Modal 组件 */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={selectedTest}>
+        {testDetails[selectedTest]}
+      </Modal>
     </div>
   );
 };
