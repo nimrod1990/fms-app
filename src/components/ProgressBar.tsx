@@ -1,10 +1,11 @@
+// src/components/ProgressBar.tsx
 import React from 'react';
 
 interface ProgressBarProps {
   progress: number; // 进度，取值 0 - 100
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = React.memo(({ progress }) => {
   return (
     <div
       className="progress-bar-container"
@@ -19,6 +20,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
       </div>
     </div>
   );
-};
+});
 
 export default ProgressBar;

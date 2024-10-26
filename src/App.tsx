@@ -1,12 +1,14 @@
 // src/App.tsx
-import React, { useState } from 'react';
-import PersonalInfoForm from './components/PersonalInfoForm';
-import Test from './components/Test';
-import Summary from './components/Summary';
+import React, { useState, Suspense, lazy } from 'react';
 import ProgressBar from './components/ProgressBar';
 import data from './data/fmsData';
 import { TestResult, PersonalInfo } from './types';
 import './styles/App.css';
+
+// 使用 React.lazy 懒加载组件
+const PersonalInfoForm = lazy(() => import('./components/PersonalInfoForm'));
+const Test = lazy(() => import('./components/Test'));
+const Summary = lazy(() => import('./components/Summary'));
 
 const App: React.FC = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
@@ -45,34 +47,25 @@ const App: React.FC = () => {
     setResults([]);
   };
 
-  if (!personalInfo) {
-    // 显示个人信息表单
-    return <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />;
-  }
-
-  if (currentTestIndex === -1) {
-    // 显示总结页面
-    return <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />;
-  }
-
-  const currentTest = data.categories[currentTestIndex];
-  const progress = ((currentTestIndex + 1) / data.categories.length) * 100;
-
-  // 获取当前测试的已有结果（如果有）
-  const existingResult = results[currentTestIndex] || null;
-
   return (
-    <div className="app-container">
-      <ProgressBar progress={progress} />
-      {/* 添加 key 属性，确保每次测试切换时 Test 组件重新挂载 */}
-      <Test
-        key={currentTest.test_name}
-        test={currentTest}
-        onNext={handleNext}
-        onBack={handleBack}
-        existingResult={existingResult}
-      />
-    </div>
+    <Suspense fallback={<div>加载中...</div>}>
+      {!personalInfo ? (
+        <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />
+      ) : currentTestIndex === -1 ? (
+        <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />
+      ) : (
+        <div className="app-container">
+          <ProgressBar progress={((currentTestIndex + 1) / data.categories.length) * 100} />
+          <Test
+            key={data.categories[currentTestIndex].test_name}
+            test={data.categories[currentTestIndex]}
+            onNext={handleNext}
+            onBack={handleBack}
+            existingResult={results[currentTestIndex] || null}
+          />
+        </div>
+      )}
+    </Suspense>
   );
 };
 

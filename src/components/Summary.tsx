@@ -1,5 +1,5 @@
 // src/components/Summary.tsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { TestResult, PersonalInfo } from '../types';
 import { generateMarkdown } from '../utils/markdown';
 import Modal from './Modal'; // 导入 Modal 组件
@@ -83,14 +83,52 @@ const testDetails: { [key: string]: React.ReactNode } = {
       {/* 添加更多详细信息 */}
     </div>
   ),
-  // ...继续为所有测试项添加详细信息
+  '肩部灵活性 (Shoulder Mobility)': (
+    <div>
+      <p><strong>原理：</strong>评估肩关节在内旋和外旋时的活动范围和对称性。肩部灵活性对于维持肩带的健康及减少上肢运动中的代偿至关重要，该测试能够帮助评估肩关节的运动范围和灵活度。</p>
+      <p><strong>医学解释：</strong>肩关节灵活性测试揭示肩带、肩胛骨和上背部的肌肉之间的相互协调性。肩胛骨的不对称性、胸椎活动受限或肩部周围肌肉的紧张都会影响动作。如果在肩部灵活性测试中发现明显的限制，这可能导致运动中出现肩部代偿，增加损伤的风险，尤其是肩袖损伤的可能性。</p>
+      <p><strong>解决方案：</strong>- **墙上滑行（Wall Slides）**：此练习有助于激活肩部的肌肉，促进肩胛骨的稳定性和肩部灵活性。站立在墙前，用前臂支撑墙面，将手臂滑向天花板的方向，保持肩膀稳定。
+- **书本打开式旋转（Open Book Rotation）**：该练习能够帮助打开胸椎并改善肩关节的活动范围。躺在瑜伽垫上，一侧卧姿，双臂向前伸展，然后慢慢转动上身，向相反方向伸展手臂，感受胸部的扩展和肩部的灵活度提升。
+- **肩关节外旋（External Rotation）**：肩关节外旋可以强化旋转肌群中的冈下肌，增加肩部的稳定性。使用弹力带进行肩关节的外旋练习，有助于增加肩部的活动范围并减少代偿性动作。
+- **坐姿辅助外旋（Seated Assisted External Rotation）**：这种练习使用一根棍棒来帮助推动肩部运动，尤其适合肩部疼痛严重的人群，有助于缓解紧张并增加肩关节的活动度。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  '主动直腿抬高 (Active Straight Leg Raise)': (
+    <div>
+      <p><strong>原理：</strong>通过弓步动作评估下肢的稳定性及髋、膝、踝的活动度和核心控制力。</p>
+      <p><strong>医学解释：</strong>主要关注下肢与躯干之间的协调性，尤其是在髋和膝之间的力学传导。</p>
+      <p><strong>解决方案：</strong>解决髋屈和膝关节的稳定性问题，控制膝盖和脚的对齐，躯干稳定性练习。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  '躯干稳定性俯卧撑 (Trunk Stability Push-Up)': (
+    <div>
+      <p><strong>原理：</strong>通过弓步动作评估下肢的稳定性及髋、膝、踝的活动度和核心控制力。</p>
+      <p><strong>医学解释：</strong>主要关注下肢与躯干之间的协调性，尤其是在髋和膝之间的力学传导。</p>
+      <p><strong>解决方案：</strong>解决髋屈和膝关节的稳定性问题，控制膝盖和脚的对齐，躯干稳定性练习。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  '旋转稳定性 (Rotary Stability)': (
+    <div>
+      <p><strong>原理：</strong>通过弓步动作评估下肢的稳定性及髋、膝、踝的活动度和核心控制力。</p>
+      <p><strong>医学解释：</strong>主要关注下肢与躯干之间的协调性，尤其是在髋和膝之间的力学传导。</p>
+      <p><strong>解决方案：</strong>解决髋屈和膝关节的稳定性问题，控制膝盖和脚的对齐，躯干稳定性练习。</p>
+      {/* 添加更多详细信息 */}
+    </div>
+  ),
+  
 };
 
 const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedTest, setSelectedTest] = useState<string>('');
 
-  const totalScore = results.reduce((sum, result) => sum + result.score, 0);
+  // 使用 useMemo 计算总分，避免不必要的重新计算
+  const totalScore = useMemo(() => {
+    return results.reduce((sum, result) => sum + result.score, 0);
+  }, [results]);
 
   const handleExport = () => {
     const markdownContent = generateMarkdown(results, personalInfo);

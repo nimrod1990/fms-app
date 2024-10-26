@@ -1,5 +1,5 @@
 // src/components/Test.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TestItem, TestResult } from '../types';
 
 interface TestProps {
@@ -9,7 +9,7 @@ interface TestProps {
   existingResult?: TestResult | null;
 }
 
-const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => {
+const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingResult }) => {
   // 初始化选中的分数
   const [selectedScore, setSelectedScore] = useState<number | null>(
     existingResult
@@ -31,7 +31,7 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
     }
   }, [clearingTestResult]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (
       (test.clearing_test && clearingTestResult !== null) ||
       !test.clearing_test
@@ -48,7 +48,15 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
     } else {
       alert('请完成所有选项');
     }
-  };
+  }, [test.clearing_test, clearingTestResult, selectedScore, onNext]);
+
+  const handleScoreChange = useCallback((score: number) => {
+    setSelectedScore(score);
+  }, []);
+
+  const handleClearingTestChange = useCallback((result: boolean) => {
+    setClearingTestResult(result);
+  }, []);
 
   return (
     <div className="test-container">
@@ -62,7 +70,7 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
                 type="radio"
                 name={`score-${test.test_name}`} // 确保 name 属性唯一
                 value={scoreItem.score}
-                onChange={() => setSelectedScore(scoreItem.score)}
+                onChange={() => handleScoreChange(scoreItem.score)}
                 disabled={clearingTestResult === true} // 禁用分数选择
                 checked={selectedScore === scoreItem.score}
               />
@@ -80,7 +88,7 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
               type="radio"
               name={`clearingTest-${test.test_name}`} // 确保 name 属性唯一
               value="yes"
-              onChange={() => setClearingTestResult(true)}
+              onChange={() => handleClearingTestChange(true)}
               checked={clearingTestResult === true}
             />
             是（此选择将自动将本项得分设为0）
@@ -90,7 +98,7 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
               type="radio"
               name={`clearingTest-${test.test_name}`} // 确保 name 属性唯一
               value="no"
-              onChange={() => setClearingTestResult(false)}
+              onChange={() => handleClearingTestChange(false)}
               checked={clearingTestResult === false}
             />
             否
@@ -109,6 +117,6 @@ const Test: React.FC<TestProps> = ({ test, onNext, onBack, existingResult }) => 
       </div>
     </div>
   );
-};
+});
 
 export default Test;
