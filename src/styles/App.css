@@ -225,15 +225,29 @@ button:hover {
 
   /* 调整表格样式以适应移动端 */
   .summary-container .results-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+    display: none; /* 隐藏表格 */
   }
 
-  .summary-container .results-table th,
-  .summary-container .results-table td {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  .summary-container .results-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .result-card h4 {
+    margin-bottom: 8px;
+  }
+
+  .result-card p {
+    margin: 4px 0;
+    font-size: 0.95rem;
   }
 
   .button-group {
@@ -244,38 +258,40 @@ button:hover {
     margin: 5px 0;
   }
 }
-.app-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
-}
 
-@media (max-width: 1200px) {
-  .app-container {
-    max-width: 90%;
-    padding: 0 10px;
-  }
+/* 卡片式布局 */
+.results-cards {
+  display: none; /* 默认隐藏，只有在移动端显示 */
 }
 
 @media (max-width: 768px) {
-  .app-container {
-    max-width: 100%;
-    padding: 0 5px;
+  .results-table {
+    display: none;
   }
-}
-/* 详细信息按钮样式 */
-.summary-container .results-table button,
-.result-card button {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
 
-.summary-container .results-table button:hover,
-.result-card button:hover {
-  background-color: #218838;
+  .results-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .result-card h4 {
+    margin-bottom: 8px;
+  }
+
+  .result-card p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .result-card button {
+    margin-top: 8px;
+  }
 }

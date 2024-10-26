@@ -1,7 +1,8 @@
 // src/components/Modal.tsx
+
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import './Modal.css';
+import './Modal.css'; // 确保 Modal.css 存在于同一目录
 
 interface ModalProps {
   isOpen: boolean;
@@ -29,9 +30,24 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay" onClick={onClose} aria-modal="true" role="dialog">
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-button" onClick={onClose} aria-label="关闭模态">
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+      data-testid="modal-overlay"
+    >
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        data-testid="modal-content"
+      >
+        <button
+          className="modal-close-button"
+          onClick={onClose}
+          aria-label="关闭模态"
+          data-testid="modal-close-button"
+        >
           &times;
         </button>
         <h3>{title}</h3>
