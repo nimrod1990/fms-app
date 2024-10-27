@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { TestItem, TestResult, ScoreCriteria, ClearingTest } from '../types';
 import Modal from './Modal';
-import './Test.css'; // 确保 Test.css 存在并包含额外的样式
 
 // 导入 Lucide React 图标
 import { HelpCircle, Info } from 'lucide-react';

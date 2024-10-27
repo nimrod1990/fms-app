@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import './Modal.css'; // 确保 Modal.css 存在于同一目录
 
 interface ModalProps {
   isOpen: boolean;
