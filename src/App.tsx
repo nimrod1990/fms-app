@@ -1,9 +1,11 @@
 // src/App.tsx
+
 import React, { useState, Suspense, lazy } from 'react';
 import ProgressBar from './components/ProgressBar';
 import data from './data/fmsData';
 import { TestResult, PersonalInfo, DominantHand, DominantFoot } from './types';
 import './styles/App.css';
+import { NotificationProvider } from './context/NotificationContext'; // 导入 NotificationProvider
 
 // 使用 React.lazy 懒加载组件
 const PersonalInfoForm = lazy(() => import('./components/PersonalInfoForm'));
@@ -50,24 +52,26 @@ const App: React.FC = () => {
   };
 
   return (
-    <Suspense fallback={<div>加载中...</div>}>
-      {!personalInfo ? (
-        <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />
-      ) : currentTestIndex === -1 ? (
-        <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />
-      ) : (
-        <div className="app-container">
-          <ProgressBar progress={((currentTestIndex + 1) / data.categories.length) * 100} />
-          <Test
-            key={data.categories[currentTestIndex].test_name}
-            test={data.categories[currentTestIndex]}
-            onNext={handleNext}
-            onBack={handleBack}
-            existingResult={results[currentTestIndex] || null}
-          />
-        </div>
-      )}
-    </Suspense>
+    <NotificationProvider> {/* 使用 NotificationProvider 包裹整个应用 */}
+      <Suspense fallback={<div>加载中...</div>}>
+        {!personalInfo ? (
+          <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />
+        ) : currentTestIndex === -1 ? (
+          <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />
+        ) : (
+          <div className="app-container">
+            <ProgressBar progress={((currentTestIndex + 1) / data.categories.length) * 100} />
+            <Test
+              key={data.categories[currentTestIndex].test_name}
+              test={data.categories[currentTestIndex]}
+              onNext={handleNext}
+              onBack={handleBack}
+              existingResult={results[currentTestIndex] || null}
+            />
+          </div>
+        )}
+      </Suspense>
+    </NotificationProvider>
   );
 };
 

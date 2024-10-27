@@ -3,9 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { TestItem, TestResult, ScoreCriteria, ClearingTest } from '../types';
 import Modal from './Modal';
-
-// 导入 Lucide React 图标
 import { HelpCircle, Info } from 'lucide-react';
+import { useNotification } from '../context/NotificationContext'; // 正确导入 useNotification
 
 interface TestProps {
   test: TestItem;
@@ -48,6 +47,8 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
     images: string[];
   } | null>(null);
 
+  const { notify } = useNotification(); // 使用通知
+
   // 如果选择了清除测试，则清除选定的分数
   useEffect(() => {
     if (clearingTestResult) {
@@ -68,21 +69,23 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
         const finalScore = clearingTestResult ? 0 : selectedScore!;
         onNext(finalScore, clearingTestResult);
       } else {
-        alert('请完成所有选项。');
+        notify('请完成所有选项。', 'error');
       }
     } else {
-      alert('请完成所有选项。');
+      notify('请完成所有选项。', 'error');
     }
-  }, [test.clearing_test, clearingTestResult, selectedScore, onNext]);
+  }, [test.clearing_test, clearingTestResult, selectedScore, onNext, notify]);
 
   // 处理分数选择
   const handleScoreChange = useCallback((score: number) => {
     setSelectedScore(score);
+    // 不再需要清除 errorMessage
   }, []);
 
   // 处理清除测试选择
   const handleClearingTestChange = useCallback((result: boolean) => {
     setClearingTestResult(result);
+    // 不再需要清除 errorMessage
   }, []);
 
   // 打开分数详情模态框

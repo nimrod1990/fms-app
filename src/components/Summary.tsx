@@ -4,6 +4,9 @@ import React, { useState, useMemo } from 'react';
 import { TestResult, PersonalInfo } from '../types';
 import { generateMarkdown } from '../utils/markdown';
 import Modal from './Modal'; // 导入 Modal 组件
+import { Info } from 'lucide-react';
+import { Tooltip } from 'react-tooltip'; // 正确导入 Tooltip
+import 'react-tooltip/dist/react-tooltip.css'; // 导入样式
 
 interface SummaryProps {
   results: TestResult[];
@@ -168,7 +171,16 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
             <tr>
               <th>测试项目</th>
               <th>得分</th>
-              <th>清除测试结果</th>
+              <th>
+                清除测试结果{' '}
+                <Info
+                  size={16}
+                  data-tooltip-id="clearing-test-tooltip"
+                  data-tooltip-content="通过意味着该项分数自动设为0，未通过则保留原得分。"
+                  style={{ cursor: 'pointer', verticalAlign: 'middle' }}
+                />
+                <Tooltip id="clearing-test-tooltip" place="top" type="dark" effect="solid" />
+              </th>
               <th>详细信息</th>
             </tr>
           </thead>
@@ -179,7 +191,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                 <td>{result.score}</td>
                 <td>
                   {result.clearingTest === true
-                    ? '通过（得分设为0）'
+                    ? '通过（分数自动设为0）'
                     : result.clearingTest === false
                     ? '未通过'
                     : '无'}

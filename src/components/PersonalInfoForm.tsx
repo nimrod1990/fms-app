@@ -1,6 +1,8 @@
 // src/components/PersonalInfoForm.tsx
+
 import React, { useState } from 'react';
 import { PersonalInfo, DominantHand, DominantFoot } from '../types';
+import { useNotification } from '../context/NotificationContext'; // 导入 useNotification
 
 interface PersonalInfoFormProps {
   onSubmit: (info: PersonalInfo) => void;
@@ -22,12 +24,14 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
   const [dominantFoot, setDominantFoot] = useState<DominantFoot>(DominantFoot.Right);
   const [tester, setTester] = useState<string>('');
 
+  const { notify } = useNotification(); // 使用通知
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name && testDate && tester) {
       onSubmit({ name, testDate, dominantHand, dominantFoot, tester });
     } else {
-      alert('请完整填写所有必填信息。');
+      notify('请完整填写所有必填信息。', 'error');
     }
   };
 
