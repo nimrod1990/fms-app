@@ -68,10 +68,10 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
         const finalScore = clearingTestResult ? 0 : selectedScore!;
         onNext(finalScore, clearingTestResult);
       } else {
-        alert('请完成所有选项');
+        alert('请完成所有选项。');
       }
     } else {
-      alert('请完成所有选项');
+      alert('请完成所有选项。');
     }
   }, [test.clearing_test, clearingTestResult, selectedScore, onNext]);
 
@@ -86,11 +86,11 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
   }, []);
 
   // 打开分数详情模态框
-  const openDetailsModal = useCallback((score: ScoreCriteria) => {
+  const openDetailsModal = useCallback((scoreItem: ScoreCriteria) => {
     setDetailsModalContent({
-      title: `${test.test_name} - 得分 ${score.score}`,
-      details: score.details,
-      images: score.images,
+      title: `${test.test_name} - 得分 ${scoreItem.score}`,
+      details: scoreItem.details,
+      images: scoreItem.images,
     });
     setIsDetailsModalOpen(true);
   }, [test.test_name]);
@@ -161,7 +161,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
       {/* 评分标准列表 */}
       <h3>评分标准：</h3>
       <ul className="score-list">
-        {test.scores.map((scoreItem) => (
+        {test.scores.map((scoreItem: ScoreCriteria) => (
           <li key={scoreItem.score} className="score-item">
             <label className="score-label">
               <input
@@ -249,7 +249,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
           {/* 如果有图像，则渲染图像 */}
           {detailsModalContent.images && detailsModalContent.images.length > 0 && (
             <div className="modal-images">
-              {detailsModalContent.images.map((imageUrl, index) => (
+              {detailsModalContent.images.map((imageUrl: string, index: number) => (
                 <img
                   key={index}
                   src={imageUrl}
@@ -273,7 +273,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
           {/* 如果有图像，则渲染图像 */}
           {clearingTestModalContent.images && clearingTestModalContent.images.length > 0 && (
             <div className="modal-images">
-              {clearingTestModalContent.images.map((imageUrl, index) => (
+              {clearingTestModalContent.images.map((imageUrl: string, index: number) => (
                 <img
                   key={index}
                   src={imageUrl}
@@ -289,4 +289,6 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
   );
 });
 
+// 导出 handleSubmit 函数以便于测试（如果需要）
+export { Test };
 export default Test;

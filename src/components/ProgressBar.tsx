@@ -6,17 +6,20 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = React.memo(({ progress }) => {
+  // 确保 progress 在 0 - 100 之间
+  const validProgress = Math.min(100, Math.max(0, progress));
+
   return (
     <div
       className="progress-bar-container"
       role="progressbar"
-      aria-valuenow={progress}
+      aria-valuenow={validProgress}
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label="测试进度"
     >
-      <div className="progress-bar" style={{ width: `${progress}%` }}>
-        <span>{Math.round(progress)}%</span>
+      <div className="progress-bar" style={{ width: `${validProgress}%` }}>
+        <span>{Math.round(validProgress)}%</span>
       </div>
     </div>
   );

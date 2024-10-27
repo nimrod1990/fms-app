@@ -7,7 +7,11 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      'plugin:prettier/recommended'
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -17,6 +21,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      '@typescript-eslint': tseslint
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -24,6 +29,11 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      "semi": ["error", "always"],
+      "quotes": ["error", "single"],
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     },
   }
 );

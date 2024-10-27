@@ -1,6 +1,13 @@
 // src/utils/markdown.ts
+
 import { TestResult, PersonalInfo } from '../types';
 
+/**
+ * 生成 FMS 评估结果的 Markdown 文本
+ * @param results - 测试结果数组
+ * @param personalInfo - 被测试者的个人信息
+ * @returns Markdown 格式的评估结果
+ */
 export const generateMarkdown = (
   results: TestResult[],
   personalInfo: PersonalInfo
@@ -27,9 +34,9 @@ export const generateMarkdown = (
   // 分析与建议部分
   markdown += `# 分析与建议\n\n`;
   if (totalScore < 14) {
-    markdown += '- **总分低于14，存在较高的受伤风险，建议进行针对性的功能训练。**\n';
+    markdown += '- **您的总分低于14，存在较高的受伤风险，建议进行针对性的功能训练。**\n';
   } else {
-    markdown += '- **总分高于14，受伤风险较低，请继续保持良好的运动状态。**\n';
+    markdown += '- **您的总分高于14，受伤风险较低，请继续保持良好的运动状态。**\n';
   }
 
   results.forEach((result) => {

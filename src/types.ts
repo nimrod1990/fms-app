@@ -1,5 +1,16 @@
 // src/types.ts
 
+// 使用枚举定义优势手和脚
+export enum DominantHand {
+  Left = '左手',
+  Right = '右手',
+}
+
+export enum DominantFoot {
+  Left = '左脚',
+  Right = '右脚',
+}
+
 export interface ScoreCriteria {
   score: number;
   criteria: string;
@@ -37,7 +48,7 @@ export interface TestResult {
 export interface PersonalInfo {
   name: string;
   testDate: string;
-  dominantHand: string;
-  dominantFoot: string;
+  dominantHand: DominantHand;
+  dominantFoot: DominantFoot;
   tester: string;
 }

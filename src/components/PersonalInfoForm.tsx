@@ -1,6 +1,6 @@
 // src/components/PersonalInfoForm.tsx
 import React, { useState } from 'react';
-import { PersonalInfo } from '../types';
+import { PersonalInfo, DominantHand, DominantFoot } from '../types';
 
 interface PersonalInfoFormProps {
   onSubmit: (info: PersonalInfo) => void;
@@ -16,13 +16,13 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
     return `${year}-${month}-${day}`;
   };
 
-  const [name, setName] = useState('');
-  const [testDate, setTestDate] = useState(getTodayDate());
-  const [dominantHand, setDominantHand] = useState('右手');
-  const [dominantFoot, setDominantFoot] = useState('右脚');
-  const [tester, setTester] = useState('');
+  const [name, setName] = useState<string>('');
+  const [testDate, setTestDate] = useState<string>(getTodayDate());
+  const [dominantHand, setDominantHand] = useState<DominantHand>(DominantHand.Right);
+  const [dominantFoot, setDominantFoot] = useState<DominantFoot>(DominantFoot.Right);
+  const [tester, setTester] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name && testDate && tester) {
       onSubmit({ name, testDate, dominantHand, dominantFoot, tester });
@@ -40,7 +40,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
           id="name"
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           required
           aria-required="true"
         />
@@ -51,7 +51,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
           id="testDate"
           type="date"
           value={testDate}
-          onChange={(e) => setTestDate(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTestDate(e.target.value)}
           required
           aria-required="true"
         />
@@ -61,10 +61,10 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
         <select
           id="dominantHand"
           value={dominantHand}
-          onChange={(e) => setDominantHand(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setDominantHand(e.target.value as DominantHand)}
         >
-          <option value="左手">左手</option>
-          <option value="右手">右手</option>
+          <option value={DominantHand.Left}>{DominantHand.Left}</option>
+          <option value={DominantHand.Right}>{DominantHand.Right}</option>
         </select>
       </div>
       <div className="form-group">
@@ -72,10 +72,10 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
         <select
           id="dominantFoot"
           value={dominantFoot}
-          onChange={(e) => setDominantFoot(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setDominantFoot(e.target.value as DominantFoot)}
         >
-          <option value="左脚">左脚</option>
-          <option value="右脚">右脚</option>
+          <option value={DominantFoot.Left}>{DominantFoot.Left}</option>
+          <option value={DominantFoot.Right}>{DominantFoot.Right}</option>
         </select>
       </div>
       <div className="form-group">
@@ -84,7 +84,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
           id="tester"
           type="text"
           value={tester}
-          onChange={(e) => setTester(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTester(e.target.value)}
           required
           aria-required="true"
         />

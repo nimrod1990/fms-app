@@ -81,13 +81,13 @@ const data: FMSData = {
           score: 2,
           criteria: '木杆不能保持与头、腰椎或骶骨接触；躯干有移动；两脚没有处于同一矢状面；膝盖不能接触木板。',
           details: '有代偿性运动，但保持平衡，建议加强髋部和膝关节的稳定性训练。',
-          images: ['/images/DM_20241026073915_015.PNG', '/images/DM_20241026073915_016.PNG'],
+          images: ['/images/DM_20241026073915_015.PNG', '/images/DM_41026073915_016.PNG'],
         },
         {
           score: 1,
           criteria: '身体失去平衡。',
           details: '失去平衡或错位，建议进行下肢稳定性和躯干控制的训练。',
-          images: ['/images/DM_20241026073915_017.PNG', '/images/DM_20241026073915_018.PNG'],
+          images: ['/images/DM_41026073915_017.PNG', '/images/DM_41026073915_018.PNG'],
         },
         {
           score: 0,

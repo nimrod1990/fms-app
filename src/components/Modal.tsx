@@ -1,6 +1,6 @@
 // src/components/Modal.tsx
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 interface ModalProps {
@@ -11,6 +11,8 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   // 处理 ESC 键关闭模态
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -20,6 +22,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     };
     if (isOpen) {
       document.addEventListener('keydown', handleEsc);
+      // 聚焦模态框
+      modalRef.current?.focus();
     }
     return () => {
       document.removeEventListener('keydown', handleEsc);
@@ -38,8 +42,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     >
       <div
         className="modal-content"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
         data-testid="modal-content"
+        tabIndex={-1}
+        ref={modalRef}
       >
         <button
           className="modal-close-button"

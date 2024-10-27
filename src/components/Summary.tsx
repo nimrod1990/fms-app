@@ -1,4 +1,5 @@
 // src/components/Summary.tsx
+
 import React, { useState, useMemo } from 'react';
 import { TestResult, PersonalInfo } from '../types';
 import { generateMarkdown } from '../utils/markdown';

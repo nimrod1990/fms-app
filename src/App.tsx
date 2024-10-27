@@ -2,7 +2,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import ProgressBar from './components/ProgressBar';
 import data from './data/fmsData';
-import { TestResult, PersonalInfo } from './types';
+import { TestResult, PersonalInfo, DominantHand, DominantFoot } from './types';
 import './styles/App.css';
 
 // 使用 React.lazy 懒加载组件
@@ -15,15 +15,17 @@ const App: React.FC = () => {
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
   const [results, setResults] = useState<TestResult[]>([]);
 
-  const handlePersonalInfoSubmit = (info: PersonalInfo) => {
+  const handlePersonalInfoSubmit = (info: PersonalInfo): void => {
     setPersonalInfo(info);
   };
 
-  const handleNext = (score: number, clearingTest: boolean | null) => {
+  const handleNext = (score: number, clearingTest: boolean | null): void => {
+    if (!personalInfo) return;
+
     const testName = data.categories[currentTestIndex].test_name;
     const finalScore = clearingTest ? 0 : score;
     const newResult: TestResult = { testName, score: finalScore, clearingTest };
-    const updatedResults = [...results];
+    const updatedResults: TestResult[] = [...results];
     updatedResults[currentTestIndex] = newResult; // 覆盖当前测试结果
     setResults(updatedResults);
 
@@ -35,13 +37,13 @@ const App: React.FC = () => {
     }
   };
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     if (currentTestIndex > 0) {
       setCurrentTestIndex(currentTestIndex - 1);
     }
   };
 
-  const handleRestart = () => {
+  const handleRestart = (): void => {
     setPersonalInfo(null);
     setCurrentTestIndex(0);
     setResults([]);
