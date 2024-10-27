@@ -7,12 +7,20 @@ export interface ScoreCriteria {
   images: string[]; // 可选的图片数组
 }
 
+export interface ClearingTest {
+  purpose: string;
+  method: string;
+  criteria: string;
+  images: string[];
+  details: string;
+}
+
 export interface TestItem {
   test_name: string;
-  scores: ScoreCriteria[];
-  clearing_test?: string;
   purpose: string; // 测试目的
   method: string;  // 测试方法
+  scores: ScoreCriteria[];
+  clearing_test?: ClearingTest;
 }
 
 export interface FMSData {

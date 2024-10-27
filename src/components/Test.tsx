@@ -1,7 +1,7 @@
 // src/components/Test.tsx
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { TestItem, TestResult, ScoreCriteria } from '../types';
+import { TestItem, TestResult, ScoreCriteria, ClearingTest } from '../types';
 import Modal from './Modal';
 import './Test.css'; // 确保 Test.css 存在并包含额外的样式
 
@@ -40,6 +40,14 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
 
   // “方法”模态框的状态
   const [isHowToModalOpen, setIsHowToModalOpen] = useState<boolean>(false);
+
+  // 清除测试详情模态框的状态
+  const [isClearingTestModalOpen, setIsClearingTestModalOpen] = useState<boolean>(false);
+  const [clearingTestModalContent, setClearingTestModalContent] = useState<{
+    title: string;
+    details: string;
+    images: string[];
+  } | null>(null);
 
   // 如果选择了清除测试，则清除选定的分数
   useEffect(() => {
@@ -104,6 +112,24 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
     setIsHowToModalOpen(false);
   }, []);
 
+  // 打开清除测试模态框
+  const openClearingTestModal = useCallback(() => {
+    if (test.clearing_test) {
+      setClearingTestModalContent({
+        title: `清除测试 - ${test.test_name}`,
+        details: test.clearing_test.details,
+        images: test.clearing_test.images,
+      });
+      setIsClearingTestModalOpen(true);
+    }
+  }, [test.clearing_test, test.test_name]);
+
+  // 关闭清除测试模态框
+  const closeClearingTestModal = useCallback(() => {
+    setIsClearingTestModalOpen(false);
+    setClearingTestModalContent(null);
+  }, []);
+
   return (
     <div className="test-container">
       {/* 标题部分，标题居中，“方法”按钮紧靠右侧 */}
@@ -166,7 +192,16 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
       {test.clearing_test && (
         <div className="clearing-test-section">
           <h3>清除测试：</h3>
-          <p>{test.clearing_test}</p>
+          <p><strong>目的：</strong>{test.clearing_test.purpose}</p>
+          <p><strong>方法：</strong>{test.clearing_test.method}</p>
+          <button
+            type="button"
+            onClick={openClearingTestModal}
+            className="details-button"
+            aria-label={`查看清除测试 ${test.test_name} 的详细信息`}
+          >
+            <Info size={16} />
+          </button>
           <div className="clearing-test-options">
             <label>
               <input
@@ -220,6 +255,30 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
                   key={index}
                   src={imageUrl}
                   alt={`${detailsModalContent.title} 图片 ${index + 1}`}
+                  className="modal-image"
+                />
+              ))}
+            </div>
+          )}
+        </Modal>
+      )}
+
+      {/* 清除测试详情模态框 */}
+      {clearingTestModalContent && (
+        <Modal
+          isOpen={isClearingTestModalOpen}
+          onClose={closeClearingTestModal}
+          title={clearingTestModalContent.title}
+        >
+          <p>{clearingTestModalContent.details}</p>
+          {/* 如果有图像，则渲染图像 */}
+          {clearingTestModalContent.images && clearingTestModalContent.images.length > 0 && (
+            <div className="modal-images">
+              {clearingTestModalContent.images.map((imageUrl, index) => (
+                <img
+                  key={index}
+                  src={imageUrl}
+                  alt={`${clearingTestModalContent.title} 图片 ${index + 1}`}
                   className="modal-image"
                 />
               ))}
