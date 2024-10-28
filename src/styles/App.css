@@ -324,7 +324,7 @@ input[type="radio"]:focus + label {
 .details-button {
   background-color: #f9f9f9; /* 背景色改为白色 */
   color: #007bff; /* 图标颜色改为蓝色 */
-  border: 1px solid #007bff; /* 添加蓝色边框以保持按钮可见性 */
+  border: 0px solid #007bff; /* 添加蓝色边框以保持按钮可见性 */
   padding: 8px;
   border-radius: 32px;
   display: flex;

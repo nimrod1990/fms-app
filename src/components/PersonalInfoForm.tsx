@@ -22,7 +22,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
   const [testDate, setTestDate] = useState<string>(getTodayDate());
   const [dominantHand, setDominantHand] = useState<DominantHand>(DominantHand.Right);
   const [dominantFoot, setDominantFoot] = useState<DominantFoot>(DominantFoot.Right);
-  const [tester, setTester] = useState<string>('');
+  const [tester, setTester] = useState<string>('红医师');
 
   const { notify } = useNotification(); // 使用通知
 

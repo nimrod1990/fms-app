@@ -7,6 +7,7 @@ import Modal from './Modal'; // 导入 Modal 组件
 import { Info } from 'lucide-react';
 import { Tooltip } from 'react-tooltip'; // 正确导入 Tooltip
 import 'react-tooltip/dist/react-tooltip.css'; // 导入样式
+import ReactMarkdown from 'react-markdown';
 
 interface SummaryProps {
   results: TestResult[];
@@ -17,7 +18,7 @@ interface SummaryProps {
 // 定义每个测试的详细评价信息
 const evaluationMessages: { [key: string]: { [score: number]: string } } = {
   '深蹲 (Deep Squat)': {
-    3: '表现良好，躯干与胫骨平行，膝盖与脚对齐，显示出良好的下肢灵活性和核心稳定性。',
+    3: '**表现良好**，躯干与胫骨平行，膝盖与脚对齐，显示出良好的下肢灵活性和核心稳定性。',
     2: '脚跟抬高，动作与3分相同，但仍存在轻微的灵活性不足。',
     1: '脚跟抬高，动作存在重大功能障碍，建议进行髋关节和踝关节的灵活性训练。',
     0: '运动过程中有疼痛，建议咨询专业医生。',
@@ -75,7 +76,8 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
     const blob = new Blob([markdownContent], { type: 'text/markdown;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'FMS评估结果.md';
+    const fileName = `${personalInfo.name}_${personalInfo.testDate}.md`;
+    link.download = fileName;
     link.click();
   };
 
@@ -110,10 +112,10 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
 
       {/* 结果可视化展示 */}
       <div className="score-visualization">
-        <h3>测试分数可视化</h3>
+        <h3>分数汇总</h3>
         {results.map((result, index) => (
           <div key={index} className="score-bar">
-            <div className="label">{result.testName}</div>
+            <div className="label">{result.testName.split(' (')[0]}</div>
             <div className="bar-container">
               <div
                 className="bar"
@@ -148,7 +150,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
           <tbody>
             {results.map((result, index) => (
               <tr key={index}>
-                <td>{result.testName}</td>
+                <td>{result.testName.split(' (')[0]}</td>
                 <td>{result.score}</td>
                 <td>
                   {result.clearingTest === true
@@ -161,23 +163,6 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
             ))}
           </tbody>
         </table>
-
-        {/* 卡片式展示评估结果，仅在移动端显示 */}
-        <div className="results-cards">
-          {results.map((result, index) => (
-            <div key={index} className="result-card">
-              <h4>{result.testName}</h4>
-              <p><strong>得分：</strong>{result.score} / 3</p>
-              <p><strong>清除测试结果：</strong>
-                {result.clearingTest === true
-                  ? '阳性（分数自动设为0）'
-                  : result.clearingTest === false
-                    ? '阴性'
-                    : '无'}
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
 
       <div className="evaluation">
@@ -197,9 +182,9 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
 
           if (message) {
             return (
-              <p key={testName}>
-                <strong>{testName}</strong>：{message}
-              </p>
+              <ReactMarkdown key={testName}>
+                {`**${testName.split(' (')[0]}**：${message}`}
+              </ReactMarkdown>
             );
           }
 

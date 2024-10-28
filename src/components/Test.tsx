@@ -96,7 +96,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
   // 打开分数详情模态框
   const openDetailsModal = useCallback((scoreItem: ScoreCriteria) => {
     setDetailsModalContent({
-      title: `${test.test_name} - 得分 ${scoreItem.score}`,
+      title: `${test.test_name.split(' (')[0]} - 得分 ${scoreItem.score}`,
       details: scoreItem.details,
       images: scoreItem.images,
     });
@@ -123,7 +123,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
   const openClearingTestModal = useCallback(() => {
     if (test.clearing_test) {
       setClearingTestModalContent({
-        title: `清除测试 - ${test.test_name}`,
+        title: `清除测试 - ${test.test_name.split(' (')[0]}`,
         details: test.clearing_test.details,
         images: test.clearing_test.images,
       });
@@ -141,12 +141,12 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
     <div className="test-container">
       {/* 标题部分，标题居中，“方法”按钮紧靠右侧 */}
       <div className="test-header">
-        <h2 className="test-title">{test.test_name}</h2>
+        <h2 className="test-title">{test.test_name.split(' (')[0]}</h2> 
         <button
           type="button"
           onClick={openHowToModal}
           className="how-to-button"
-          aria-label={`方法 ${test.test_name}`}
+          aria-label={`方法 ${test.test_name.split(' (')[0]}`} 
         >
           <HelpCircle size={16} />
         </button>
@@ -157,7 +157,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
         <Modal
           isOpen={isHowToModalOpen}
           onClose={closeHowToModal}
-          title={`方法 - ${test.test_name}`}
+          title={`如何进行 - ${test.test_name.split(' (')[0]}`} 
         >
           <h4>测试目的</h4>
           <p>{test.purpose}</p>
@@ -204,7 +204,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
               type="button"
               onClick={openClearingTestModal}
               className="details-button"
-              aria-label={`查看清除测试 ${test.test_name} 的详细信息`}
+              aria-label={`查看清除测试 ${test.test_name.split(' (')[0]} 的详细信息`} 
             >
               <Info size={16} />
             </button>
