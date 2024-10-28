@@ -135,6 +135,21 @@ input[type="radio"]:focus + label {
   text-align: center;
 }
 
+.test-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.test-header .test-title {
+  flex: 7;
+  margin: 0;
+}
+
+.test-header .how-to-button {
+  flex: 1;
+}
+
 .test-container ul {
   list-style: none;
   padding: 0;
@@ -294,57 +309,65 @@ input[type="radio"]:focus + label {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: var(--spacing-md);
 }
 
 .modal-images img {
   max-width: 100%;
   height: auto;
-  margin: 8px;
-  border-radius: 4px;
+  margin: var(--spacing-xs);
+  border-radius: var(--border-radius-small);
 }
 
-@media (min-width: 600px) {
-  .modal-images img {
-    max-width: 48%;
-  }
+/* 按钮样式调整 */
+.how-to-button,
+.details-button {
+  background-color: #f9f9f9; /* 背景色改为白色 */
+  color: #007bff; /* 图标颜色改为蓝色 */
+  border: 0px solid #007bff; /* 添加蓝色边框以保持按钮可见性 */
+  padding: 8px;
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 卡片式布局 */
-.results-cards {
-  display: none; /* 默认隐藏，只有在移动端显示 */
+.how-to-button:hover,
+.details-button:hover {
+  background-color: #e6f0ff; /* 悬停时背景色稍微变浅 */
 }
 
-@media (max-width: 768px) {
-  .results-table {
-    display: none;
-  }
+.how-to-button svg,
+.details-button svg {
+  color: #007bff; /* 确保图标颜色为蓝色 */
+}
 
-  .results-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+/* Score Item 样式 */
+.score-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* 防止换行 */
+  margin-bottom: 12px;
+}
 
-  .result-card {
-    background-color: #f9f9f9;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.score-label {
+  flex: 7; 
+  display: flex;
+  align-items: center;
+}
 
-  .result-card h4 {
-    margin-bottom: 8px;
-  }
+.score-label input {
+  margin-right: 8px; /* 调整输入框与文字的间距 */
+}
 
-  .result-card p {
-    margin: 4px 0;
-    font-size: 0.95rem;
-  }
-
-  .result-card button {
-    margin-top: 8px;
-  }
+.details-button {
+  flex: 1; 
+  padding: 8px; /* 调整按钮内边距 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 清除测试部分 */
@@ -354,10 +377,21 @@ input[type="radio"]:focus + label {
   border-top: 1px solid #e0e0e0;
 }
 
-.clearing-test-section h3 {
+.clearing-test-header {
+  display: flex;
+  align-items: center;
   margin-bottom: var(--spacing-xs);
+}
+
+.clearing-test-header h3 {
+  flex: 7;
+  margin: 0;
   font-size: 1.25rem;
   color: var(--color-dark-gray);
+}
+
+.clearing-test-header .details-button {
+  flex: 1;
 }
 
 .clearing-test-options {
@@ -378,68 +412,51 @@ input[type="radio"]:focus + label {
   margin: 0;
 }
 
-/* 模态窗口中的图片 */
-.modal-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: var(--spacing-md);
-}
-
-.modal-images img {
-  max-width: 100%;
-  height: auto;
-  margin: var(--spacing-xs);
-  border-radius: var(--border-radius-small);
-}
-
 /* 响应式设计 */
-@media (min-width: 600px) {
-  .modal-images img {
-    max-width: 48%;
-  }
+
+/* 移除对 .score-item, .test-header, 和 .clearing-test-section 的媒体查询干扰 */
+
+/* 卡片式布局 */
+.results-cards {
+  display: none; /* 默认隐藏，仅在移动端显示 */
 }
 
-@media (max-width: 600px) {
-  .button-group {
+@media (max-width: 768px) {
+  .results-table {
+    display: none; /* 隐藏表格 */
+  }
+
+  .results-cards {
+    display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 16px;
   }
 
-  .back-button,
-  .next-button {
-    flex: 1 1 100%;
-    margin: 0;
+  .result-card {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .clearing-test-options {
-    flex-direction: column;
-    gap: var(--spacing-sm);
+  .result-card h4 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    color: var(--color-dark-gray);
   }
 
-  .score-item {
-    flex-direction: column;
-    align-items: flex-start;
+  .result-card p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+    color: #555;
   }
 
-  .details-button {
-    margin-left: 0;
-    margin-top: var(--spacing-xs);
+  .result-card .details-button {
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
 }
-
-/* 错误消息样式 */
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 12px 16px;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  margin-bottom: 16px;
-}
-/* src/styles/App.css */
-
-/* 现有样式 ... */
 
 /* 错误消息样式 */
 .error-message {

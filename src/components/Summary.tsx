@@ -92,9 +92,9 @@ const testDetails: { [key: string]: React.ReactNode } = {
       <p><strong>原理：</strong>评估肩关节在内旋和外旋时的活动范围和对称性。肩部灵活性对于维持肩带的健康及减少上肢运动中的代偿至关重要，该测试能够帮助评估肩关节的运动范围和灵活度。</p>
       <p><strong>医学解释：</strong>肩关节灵活性测试揭示肩带、肩胛骨和上背部的肌肉之间的相互协调性。肩胛骨的不对称性、胸椎活动受限或肩部周围肌肉的紧张都会影响动作。如果在肩部灵活性测试中发现明显的限制，这可能导致运动中出现肩部代偿，增加损伤的风险，尤其是肩袖损伤的可能性。</p>
       <p><strong>解决方案：</strong>- **墙上滑行（Wall Slides）**：此练习有助于激活肩部的肌肉，促进肩胛骨的稳定性和肩部灵活性。站立在墙前，用前臂支撑墙面，将手臂滑向天花板的方向，保持肩膀稳定。
-- **书本打开式旋转（Open Book Rotation）**：该练习能够帮助打开胸椎并改善肩关节的活动范围。躺在瑜伽垫上，一侧卧姿，双臂向前伸展，然后慢慢转动上身，向相反方向伸展手臂，感受胸部的扩展和肩部的灵活度提升。
-- **肩关节外旋（External Rotation）**：肩关节外旋可以强化旋转肌群中的冈下肌，增加肩部的稳定性。使用弹力带进行肩关节的外旋练习，有助于增加肩部的活动范围并减少代偿性动作。
-- **坐姿辅助外旋（Seated Assisted External Rotation）**：这种练习使用一根棍棒来帮助推动肩部运动，尤其适合肩部疼痛严重的人群，有助于缓解紧张并增加肩关节的活动度。</p>
+        - **书本打开式旋转（Open Book Rotation）**：该练习能够帮助打开胸椎并改善肩关节的活动范围。躺在瑜伽垫上，一侧卧姿，双臂向前伸展，然后慢慢转动上身，向相反方向伸展手臂，感受胸部的扩展和肩部的灵活度提升。
+        - **肩关节外旋（External Rotation）**：肩关节外旋可以强化旋转肌群中的冈下肌，增加肩部的稳定性。使用弹力带进行肩关节的外旋练习，有助于增加肩部的活动范围并减少代偿性动作。
+        - **坐姿辅助外旋（Seated Assisted External Rotation）**：这种练习使用一根棍棒来帮助推动肩部运动，尤其适合肩部疼痛严重的人群，有助于缓解紧张并增加肩关节的活动度。</p>
       {/* 添加更多详细信息 */}
     </div>
   ),
@@ -122,7 +122,7 @@ const testDetails: { [key: string]: React.ReactNode } = {
       {/* 添加更多详细信息 */}
     </div>
   ),
-  
+
 };
 
 const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) => {
@@ -176,10 +176,10 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                 <Info
                   size={16}
                   data-tooltip-id="clearing-test-tooltip"
-                  data-tooltip-content="通过意味着该项分数自动设为0，未通过则保留原得分。"
+                  data-tooltip-content="阳性意味着该项分数自动设为0，阴性则保留原得分。"
                   style={{ cursor: 'pointer', verticalAlign: 'middle' }}
                 />
-                <Tooltip id="clearing-test-tooltip" place="top" type="dark" effect="solid" />
+                <Tooltip id="clearing-test-tooltip" place="top" />
               </th>
               <th>详细信息</th>
             </tr>
@@ -191,19 +191,42 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                 <td>{result.score}</td>
                 <td>
                   {result.clearingTest === true
-                    ? '通过（分数自动设为0）'
+                    ? '阳性（分数自动设为0）'
                     : result.clearingTest === false
-                    ? '未通过'
-                    : '无'}
+                      ? '阴性'
+                      : '无'}
                 </td>
                 <td>
-                  <button onClick={() => openModal(result.testName)}>详细信息</button>
+                  <button onClick={() => openModal(result.testName)} className="details-button">
+                    <Info size={16} />
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        {/* 卡片式展示评估结果，仅在移动端显示 */}
+        <div className="results-cards">
+          {results.map((result, index) => (
+            <div key={index} className="result-card">
+              <h4>{result.testName}</h4>
+              <p><strong>得分：</strong>{result.score}</p>
+              <p><strong>清除测试结果：</strong>
+                {result.clearingTest === true
+                  ? '阳性（分数自动设为0）'
+                  : result.clearingTest === false
+                    ? '阴性'
+                    : '无'}
+              </p>
+              <button onClick={() => openModal(result.testName)} className="details-button">
+                <Info size={16} />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+
       <div className="evaluation">
         <h3>测量结果的评价</h3>
         {/* 根据总分提供具体的评价 */}
@@ -238,7 +261,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
       <Modal isOpen={isModalOpen} onClose={closeModal} title={selectedTest}>
         {testDetails[selectedTest]}
       </Modal>
-    </div>
+    </div >
   );
 };
 

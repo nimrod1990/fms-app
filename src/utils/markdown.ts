@@ -13,7 +13,7 @@ export const generateMarkdown = (
   personalInfo: PersonalInfo
 ): string => {
   const totalScore = results.reduce((sum, result) => sum + result.score, 0);
-  let markdown = `# 功能动作筛查 (FMS) 评估结果\n\n`;
+  let markdown = `# 红医师运动伤风险评估结果\n\n`;
 
   markdown += `**被测试者姓名**：${personalInfo.name}  \n`;
   markdown += `**测试时间**：${personalInfo.testDate}  \n`;
@@ -26,7 +26,7 @@ export const generateMarkdown = (
     markdown += `## ${result.testName}\n`;
     markdown += `- 得分: ${result.score}\n`;
     if (result.clearingTest !== null) {
-      markdown += `- 清除测试结果: ${result.clearingTest ? '通过（分数设为0）' : '未通过'}\n`;
+      markdown += `- 清除测试结果: ${result.clearingTest ? '阳性（分数设为0）' : '阴性'}\n`;
     }
     markdown += '\n';
   });

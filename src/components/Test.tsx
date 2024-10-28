@@ -25,7 +25,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
 
   // 清除测试结果的状态
   const [clearingTestResult, setClearingTestResult] = useState<boolean | null>(
-    test.clearing_test ? (existingResult ? existingResult.clearingTest : null) : false
+    test.clearing_test ? (existingResult ? existingResult.clearingTest : false) : false
   );
 
   // 分数详情模态框的状态
@@ -193,17 +193,20 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
       {/* 清除测试部分 */}
       {test.clearing_test && (
         <div className="clearing-test-section">
-          <h3>清除测试：</h3>
+          <div className="clearing-test-header">
+            <h3>清除测试：</h3>
+            <button
+              type="button"
+              onClick={openClearingTestModal}
+              className="details-button"
+              aria-label={`查看清除测试 ${test.test_name} 的详细信息`}
+            >
+              <Info size={16} />
+            </button>
+          </div>
           <p><strong>目的：</strong>{test.clearing_test.purpose}</p>
           <p><strong>方法：</strong>{test.clearing_test.method}</p>
-          <button
-            type="button"
-            onClick={openClearingTestModal}
-            className="details-button"
-            aria-label={`查看清除测试 ${test.test_name} 的详细信息`}
-          >
-            <Info size={16} />
-          </button>
+          <p><strong>判断：</strong>{test.clearing_test.criteria}</p>
           <div className="clearing-test-options">
             <label>
               <input

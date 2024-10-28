@@ -2,7 +2,7 @@
 import { FMSData } from '../types';
 
 const data: FMSData = {
-  title: '功能动作筛查 (FMS)',
+  title: ' (FMS)',
   categories: [
     {
       test_name: '深蹲 (Deep Squat)',
