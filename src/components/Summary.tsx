@@ -102,7 +102,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
     <div className={`summary-container ${isLoaded ? 'loaded' : ''}`}>
       <h2>评估结果</h2>
       <div className="personal-info">
-        <p>被测试者姓名：{personalInfo.name}</p>
+        <p>姓名：{personalInfo.name}</p>
         <p>测试时间：{personalInfo.testDate}</p>
         <p>优势手：{personalInfo.dominantHand}</p>
         <p>优势脚：{personalInfo.dominantFoot}</p>

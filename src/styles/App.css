@@ -207,8 +207,16 @@ input[type="radio"]:focus + label {
 }
 
 .summary-container .personal-info p {
+  margin: 8px 8px;
+  font-size: 15px;
+}
+
+.summary-container .personal-info {
   margin: 8px 0;
   font-size: 16px;
+  border: 1px solid #696969;
+  border-radius: 16px;
+  padding: 8px;
 }
 
 .summary-container .results-chart {
@@ -346,6 +354,10 @@ input[type="radio"]:focus + label {
 /* Score Item 样式 */
 .score-item {
   display: flex;
+  border: 1px solid #007bff;
+  border-radius: 16px;
+  padding: 8px;
+  background-color: #e6f0ff;
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap; /* 防止换行 */
@@ -396,6 +408,10 @@ input[type="radio"]:focus + label {
 
 .clearing-test-options {
   display: flex;
+  border: 1px solid #007bff;
+  border-radius: 16px;
+  padding: 8px;
+  background-color: #e6f0ff;
   gap: var(--spacing-lg);
   margin-top: var(--spacing-xs);
 }
@@ -430,8 +446,8 @@ input[type="radio"]:focus + label {
 }
 
 .score-visualization .score-bar .label {
-  flex: 2;
-  font-size: 1rem;
+  flex: 7;
+  font-size: 0.9rem;
   color: var(--color-dark-gray);
 }
 

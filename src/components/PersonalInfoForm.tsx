@@ -39,7 +39,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onSubmit }) => {
     <form className="personal-info-form" onSubmit={handleSubmit}>
       <h2>红医师运动伤风险评估</h2>
       <div className="form-group">
-        <label htmlFor="name">被测试者姓名：</label>
+        <label htmlFor="name">姓名：</label>
         <input
           id="name"
           type="text"

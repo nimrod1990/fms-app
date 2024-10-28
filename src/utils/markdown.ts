@@ -17,7 +17,7 @@ export const generateMarkdown = (
   const totalScore = results.reduce((sum, result) => sum + result.score, 0);
   let markdown = `# 红医师训练伤风险评估结果\n\n`;
 
-  markdown += `**被测试者姓名**：${personalInfo.name}  \n`;
+  markdown += `**姓名**：${personalInfo.name}  \n`;
   markdown += `**测试时间**：${personalInfo.testDate}  \n`;
   markdown += `**优势手**：${personalInfo.dominantHand}  \n`;
   markdown += `**优势脚**：${personalInfo.dominantFoot}  \n`;
