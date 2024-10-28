@@ -3,7 +3,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import ProgressBar from './components/ProgressBar';
 import data from './data/fmsData';
-import { TestResult, PersonalInfo, DominantHand, DominantFoot } from './types';
+import { TestResult, PersonalInfo } from './types';
 import './styles/App.css';
 import { NotificationProvider } from './context/NotificationContext'; // 导入 NotificationProvider
 
@@ -17,10 +17,12 @@ const App: React.FC = () => {
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
   const [results, setResults] = useState<TestResult[]>([]);
 
+  // 处理个人信息表单提交
   const handlePersonalInfoSubmit = (info: PersonalInfo): void => {
     setPersonalInfo(info);
   };
 
+  // 处理每项测试的下一步操作
   const handleNext = (score: number, clearingTest: boolean | null): void => {
     if (!personalInfo) return;
 
@@ -39,12 +41,16 @@ const App: React.FC = () => {
     }
   };
 
+  // 处理返回操作
   const handleBack = (): void => {
-    if (currentTestIndex > 0) {
+    if (currentTestIndex === 0) {
+      setPersonalInfo(null); // 返回个人信息输入页
+    } else {
       setCurrentTestIndex(currentTestIndex - 1);
     }
   };
 
+  // 处理重新开始
   const handleRestart = (): void => {
     setPersonalInfo(null);
     setCurrentTestIndex(0);
@@ -71,6 +77,7 @@ const App: React.FC = () => {
               onNext={handleNext}
               onBack={handleBack}
               existingResult={results[currentTestIndex] || null}
+              isLastTest={currentTestIndex === data.categories.length - 1} // 新增 prop
             />
           </div>
         )}

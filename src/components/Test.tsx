@@ -1,7 +1,7 @@
 // src/components/Test.tsx
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { TestItem, TestResult, ScoreCriteria, ClearingTest } from '../types';
+import { TestItem, TestResult, ScoreCriteria } from '../types';
 import Modal from './Modal';
 import { HelpCircle, Info } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext'; // 正确导入 useNotification
@@ -11,9 +11,10 @@ interface TestProps {
   onNext: (score: number, clearingTest: boolean | null) => void;
   onBack?: () => void;
   existingResult?: TestResult | null;
+  isLastTest: boolean; // 新增 prop
 }
 
-const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingResult }) => {
+const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingResult, isLastTest }) => {
   // 选定分数的状态
   const [selectedScore, setSelectedScore] = useState<number | null>(
     existingResult
@@ -68,13 +69,17 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
       ) {
         const finalScore = clearingTestResult ? 0 : selectedScore!;
         onNext(finalScore, clearingTestResult);
+
+        if (isLastTest) {
+          notify('评测已完成', 'success'); // 触发通知
+        }
       } else {
         notify('请完成所有选项。', 'error');
       }
     } else {
       notify('请完成所有选项。', 'error');
     }
-  }, [test.clearing_test, clearingTestResult, selectedScore, onNext, notify]);
+  }, [test.clearing_test, clearingTestResult, selectedScore, onNext, notify, isLastTest]);
 
   // 处理分数选择
   const handleScoreChange = useCallback((score: number) => {
@@ -240,7 +245,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
           </button>
         )}
         <button type="button" onClick={handleSubmit} className="next-button">
-          下一步
+          {isLastTest ? '提交结果' : '下一步'}
         </button>
       </div>
 
