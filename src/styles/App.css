@@ -324,7 +324,7 @@ input[type="radio"]:focus + label {
 .details-button {
   background-color: #f9f9f9; /* 背景色改为白色 */
   color: #007bff; /* 图标颜色改为蓝色 */
-  border: 0px solid #007bff; /* 添加蓝色边框以保持按钮可见性 */
+  border: 1px solid #007bff; /* 添加蓝色边框以保持按钮可见性 */
   padding: 8px;
   border-radius: 32px;
   display: flex;
@@ -412,9 +412,55 @@ input[type="radio"]:focus + label {
   margin: 0;
 }
 
-/* 响应式设计 */
+/* 结果可视化样式 */
+.score-visualization {
+  margin: 24px 0;
+}
 
-/* 移除对 .score-item, .test-header, 和 .clearing-test-section 的媒体查询干扰 */
+.score-visualization h3 {
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  color: var(--color-dark-gray);
+}
+
+.score-visualization .score-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.score-visualization .score-bar .label {
+  flex: 2;
+  font-size: 1rem;
+  color: var(--color-dark-gray);
+}
+
+.score-visualization .score-bar .bar-container {
+  flex: 7;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.score-visualization .score-bar .bar {
+  height: 100%;
+  background-color: #007bff;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.score-visualization .score-bar .score {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--color-dark-gray);
+}
+
+/* 确保条形图在加载时根据分数宽度 */
+.summary-container.loaded .bar {
+  /* 动态宽度将通过 React 设置内联样式 */
+}
 
 /* 卡片式布局 */
 .results-cards {

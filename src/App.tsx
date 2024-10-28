@@ -57,7 +57,11 @@ const App: React.FC = () => {
         {!personalInfo ? (
           <PersonalInfoForm onSubmit={handlePersonalInfoSubmit} />
         ) : currentTestIndex === -1 ? (
-          <Summary results={results} personalInfo={personalInfo} onRestart={handleRestart} />
+          <Summary
+            results={results}
+            personalInfo={personalInfo}
+            onRestart={handleRestart}
+          />
         ) : (
           <div className="app-container">
             <ProgressBar progress={((currentTestIndex + 1) / data.categories.length) * 100} />
