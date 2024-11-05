@@ -180,7 +180,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
                 disabled={clearingTestResult === true} // 如果选择了清除测试，则禁用
                 checked={selectedScore === scoreItem.score}
               />
-              {`得分 ${scoreItem.score}: ${scoreItem.criteria}`}
+              {`${scoreItem.score}分: ${scoreItem.criteria}`}
             </label>
             {/* “讲解”按钮 */}
             <button
@@ -221,7 +221,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
                 onChange={() => handleClearingTestChange(true)}
                 checked={clearingTestResult === true}
               />
-              是（此选择将自动将本项得分设为0）
+              疼痛/无法完成
             </label>
             <label>
               <input
@@ -231,7 +231,7 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
                 onChange={() => handleClearingTestChange(false)}
                 checked={clearingTestResult === false}
               />
-              否
+              顺利完成
             </label>
           </div>
         </div>

@@ -17,13 +17,14 @@
   --spacing-lg: 20px;
   --font-size-base: 14px;
   --font-size-medium: 16px;
+  --font-size-large: 18px;
   --transition-speed: 0.3s;
 }
 
 /* 通用样式 */
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 20px; /* 从 index.css 移除，统一在 App.css */
+  margin: 20px; 
   padding: 0;
   color: #333;
   background-color: #f9f9f9;
@@ -71,11 +72,6 @@ button:hover {
 }
 
 button:focus {
-  outline: 2px solid var(--color-primary-hover);
-  outline-offset: 2px;
-}
-
-input[type="radio"]:focus + label {
   outline: 2px solid var(--color-primary-hover);
   outline-offset: 2px;
 }
@@ -306,13 +302,9 @@ input[type="radio"]:focus + label {
   margin-top: 16px;
 }
 
-.modal-body img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 16px;
-  border-radius: 4px;
-}
+/* 注意：已移除 .modal-body img 规则 */
 
+/* Modal-images 样式 */
 .modal-images {
   display: flex;
   flex-wrap: wrap;
@@ -365,21 +357,13 @@ input[type="radio"]:focus + label {
 }
 
 .score-label {
-  flex: 7; 
+  flex: 10; 
   display: flex;
   align-items: center;
 }
 
 .score-label input {
   margin-right: 8px; /* 调整输入框与文字的间距 */
-}
-
-.details-button {
-  flex: 1; 
-  padding: 8px; /* 调整按钮内边距 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* 清除测试部分 */
@@ -420,8 +404,9 @@ input[type="radio"]:focus + label {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-large);
   color: var(--color-dark-gray);
+  font-weight: bold; 
 }
 
 .clearing-test-options input {
@@ -520,14 +505,11 @@ input[type="radio"]:focus + label {
   }
 }
 
+/* 已移除 .results-cards 和相关媒体查询 */
+
 /* 错误消息样式 */
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 12px 16px;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
-  margin-bottom: 16px;
+  /* 已移除该类，因为项目中未使用 */
 }
 
 /* 通知样式 */
@@ -564,3 +546,5 @@ input[type="radio"]:focus + label {
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+/* 已移除 input[type="radio"]:focus + label 规则 */
