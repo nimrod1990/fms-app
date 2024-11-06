@@ -87,7 +87,7 @@ const data: FMSData = {
           score: 1,
           criteria: '身体失去平衡。',
           details: '失去平衡或错位，建议进行下肢稳定性和躯干控制的训练。',
-          images: ['/images/DM_41026073915_017.PNG', '/images/DM_41026073915_018.PNG'],
+          images: ['/images/DM_20241026073915_017.PNG', '/images/DM_20241026073915_018.PNG'],
         },
         {
           score: 0,
@@ -224,13 +224,13 @@ const data: FMSData = {
           score: 2,
           criteria: '运动员能够以异侧对角的形式正确完成动作。',
           details: '无法正确完成单侧动作，但保持平衡，建议加强核心控制能力。',
-          images: ['/images/DM_41026073915_034.PNG', '/images/DM_41026073915_035.PNG'],
+          images: ['/images/DM_20241026073915_034.PNG', '/images/DM_20241026073915_035.PNG'],
         },
         {
           score: 1,
           criteria: '失去平衡或者不能正确完成动作。',
           details: '无法完成单侧动作，失去平衡，建议进行核心稳定性和协调性的训练。',
-          images: ['/images/DM_41026073915_036.PNG', '/images/DM_41026073915_037.PNG'],
+          images: ['/images/DM_20241026073915_036.PNG', '/images/DM_20241026073915_037.PNG'],
         },
         {
           score: 0,

@@ -51,22 +51,47 @@ export const generateMarkdown = (
   markdown += `\n`;
 
   // 分析与建议部分
-  markdown += `# 分析与建议\n\n`;
+  markdown += `## 分析与建议\n\n`;
   if (totalScore < 14) {
-    markdown += '- **您的总分低于14，存在较高的受伤风险，建议进行针对性的功能训练。**\n';
+    markdown += `**您的总分低于14，存在较高的受伤风险，建议进行针对性的功能训练。**\n\n`;
   } else {
-    markdown += '- **您的总分高于14，受伤风险较低，请继续保持良好的运动状态。**\n';
+    markdown += `**您的总分高于14，受伤风险较低，请继续保持良好的运动状态。**\n\n`;
   }
 
-  // 添加每项测试的评价
-  markdown += `\n`;
-  results.forEach((result) => {
-    const testName = result.testName;
+  // 开始有序列表
+  results.forEach((result, index) => {
+    const testName = result.testName.split(' (')[0];
     const score = result.score;
-    const message = evaluationMessages[testName]?.[score];
+    const message = evaluationMessages[result.testName]?.[score];
 
     if (message) {
-      markdown += `- **${testName}**：${message}\n`;
+      const messageLines = message.split('\n').map(line => line.trim());
+
+      let inReferencePlan = false;
+
+      // 添加有序列表编号
+      markdown += `${index + 1}. **${testName}**：\n\n`;
+
+      messageLines.forEach(line => {
+        if (line.startsWith('**参考方案') || line.startsWith('**参考方案：')) {
+          inReferencePlan = true;
+          markdown += `   **参考方案：**\n\n`;
+        } else if (inReferencePlan) {
+          if (line.startsWith('**') || line.startsWith('*')) {
+            // 如果行以 ** 开头，视为子标题
+            markdown += `   ${line}\n\n`;
+          } else if (line.startsWith('改善') || line.startsWith('使用') || line.startsWith('增加') || line.startsWith('通过') || line.startsWith('练习')) {
+            // 如果行以特定关键词开头，视为子项
+            markdown += `   - ${line}\n\n`;
+          } else {
+            // 普通段落
+            markdown += `   ${line}\n\n`;
+          }
+        } else {
+          // 普通内容，不在“参考方案”部分
+          markdown += `   ${line}\n\n`;
+        }
+      });
     }
   });
 

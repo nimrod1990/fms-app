@@ -44,6 +44,8 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
   const [isClearingTestModalOpen, setIsClearingTestModalOpen] = useState<boolean>(false);
   const [clearingTestModalContent, setClearingTestModalContent] = useState<{
     title: string;
+    purpose: string;
+    criteria: string;
     details: string;
     images: string[];
   } | null>(null);
@@ -124,6 +126,8 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
     if (test.clearing_test) {
       setClearingTestModalContent({
         title: `清除测试 - ${test.test_name.split(' (')[0]}`,
+        purpose: test.clearing_test.purpose,
+        criteria: test.clearing_test.criteria,
         details: test.clearing_test.details,
         images: test.clearing_test.images,
       });
@@ -209,9 +213,8 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
               <Info size={16} />
             </button>
           </div>
-          <p><strong>目的：</strong>{test.clearing_test.purpose}</p>
+          {/* 保留“方法”条目 */}
           <p><strong>方法：</strong>{test.clearing_test.method}</p>
-          <p><strong>判断：</strong>{test.clearing_test.criteria}</p>
           <div className="clearing-test-options">
             <label>
               <input
@@ -280,6 +283,11 @@ const Test: React.FC<TestProps> = React.memo(({ test, onNext, onBack, existingRe
           onClose={closeClearingTestModal}
           title={clearingTestModalContent.title}
         >
+          <h4>测试目的</h4>
+          <p>{clearingTestModalContent.purpose}</p>
+          <h4>测试判断</h4>
+          <p>{clearingTestModalContent.criteria}</p>
+          <h4>详细信息</h4>
           <p>{clearingTestModalContent.details}</p>
           {/* 如果有图像，则渲染图像 */}
           {clearingTestModalContent.images && clearingTestModalContent.images.length > 0 && (
