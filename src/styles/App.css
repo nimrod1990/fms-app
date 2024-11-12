@@ -548,3 +548,16 @@ button:focus {
 }
 
 /* 已移除 input[type="radio"]:focus + label 规则 */
+
+@media print {
+  .modal-overlay,
+  .modal-content,
+  .button-group button {
+    display: none; /* 隐藏模态框和按钮，避免出现在PDF中 */
+  }
+  
+  .summary-container {
+    box-shadow: none;
+    background-color: #fff;
+  }
+}

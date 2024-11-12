@@ -1,13 +1,15 @@
 // src/components/Summary.tsx
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { TestResult, PersonalInfo } from '../types';
 import { generateMarkdown } from '../utils/markdown';
-import Modal from './Modal'; // 导入 Modal 组件
+import Modal from './Modal';
 import { Info } from 'lucide-react';
-import { Tooltip } from 'react-tooltip'; // 正确导入 Tooltip
-import 'react-tooltip/dist/react-tooltip.css'; // 导入样式
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 import ReactMarkdown from 'react-markdown';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 interface SummaryProps {
   results: TestResult[];
@@ -64,7 +66,10 @@ const evaluationMessages: { [key: string]: { [score: number]: string } } = {
 const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedTest, setSelectedTest] = useState<string>('');
-  const [isLoaded, setIsLoaded] = useState<boolean>(false); // 用于触发条形图动画
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  
+  // 引用用于导出PDF的内容
+  const exportRef = useRef<HTMLDivElement>(null);
 
   // 使用 useMemo 计算总分，避免不必要的重新计算
   const totalScore = useMemo(() => {
@@ -79,6 +84,51 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
     const fileName = `${personalInfo.name}_${personalInfo.testDate}.md`;
     link.download = fileName;
     link.click();
+  };
+  
+  // 新增的导出PDF函数
+  const handleExportPDF = async () => {
+    if (exportRef.current) {
+      try {
+        const element = exportRef.current;
+        const canvas = await html2canvas(element, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+
+        // 初始化 jsPDF
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // 创建一个临时 Image 对象
+        const img = new Image();
+        img.src = imgData;
+
+        img.onload = () => {
+          const imgWidth = img.width;
+          const imgHeight = img.height;
+          const ratio = imgWidth / imgHeight;
+          const pdfImgWidth = pdfWidth;
+          const pdfImgHeight = pdfWidth / ratio;
+
+          let heightLeft = pdfImgHeight;
+          let position = 0;
+
+          pdf.addImage(img, 'PNG', 0, position, pdfImgWidth, pdfImgHeight);
+          heightLeft -= pdfHeight;
+
+          while (heightLeft > 0) {
+            position = heightLeft - pdfImgHeight;
+            pdf.addPage();
+            pdf.addImage(img, 'PNG', 0, position, pdfImgWidth, pdfImgHeight);
+            heightLeft -= pdfHeight;
+          }
+
+          pdf.save(`${personalInfo.name}_${personalInfo.testDate}.pdf`);
+        };
+      } catch (error) {
+        console.error('导出PDF失败:', error);
+      }
+    }
   };
 
   const openModal = (testName: string) => {
@@ -113,7 +163,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
   };
 
   return (
-    <div className={`summary-container ${isLoaded ? 'loaded' : ''}`}>
+    <div className={`summary-container ${isLoaded ? 'loaded' : ''}`} ref={exportRef}>
       <h2>测试报告</h2>
 
       {/* 个人信息部分优化 */}
@@ -170,7 +220,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                 flex: '4', 
                 fontWeight: 'bold',
               }}
-              title={result.testName.split(' (')[0]} // 添加 title 以显示完整名称
+              title={result.testName.split(' (')[0]}
             >
               {result.testName.split(' (')[0]}
             </div>
@@ -267,7 +317,7 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                   }}
-                  title={result.testName.split(' (')[0]} // 添加 title 以显示完整名称
+                  title={result.testName.split(' (')[0]}
                 >
                   {result.testName.split(' (')[0]}
                 </td>
@@ -386,6 +436,22 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
         >
           导出为 Markdown
         </button>
+        
+        {/* 新增的“导出为PDF”按钮 */}
+        <button
+          onClick={handleExportPDF}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#4caf50',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          导出为PDF
+        </button>
+        
         <button
           onClick={onRestart}
           style={{
@@ -403,7 +469,6 @@ const Summary: React.FC<SummaryProps> = ({ results, personalInfo, onRestart }) =
 
       {/* Modal 组件 */}
       <Modal isOpen={isModalOpen} onClose={closeModal} title={selectedTest}>
-        {/* 由于不再需要详细信息，这里可以为空或提供简要信息 */}
         <p>详细信息已移除。</p>
       </Modal>
     </div>
